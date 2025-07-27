@@ -176,3 +176,6 @@ idea/
 .idea
 .idea/
 wg_zero.conf
+bot-settings.json
+settings.json
+user_db.txt
