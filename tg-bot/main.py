@@ -16,6 +16,12 @@ def main(message):
     db.insert_new_user(message.from_user.id, SETTINGS_JSON["user_db"])
 
 
+@bot.message_handler(commands=["get_conf"])
+def get_conf(message):
+    bot.send_message(message.chat.id, "Держи конфиг")
+    with open("wg_zero.conf", "rb") as file:
+        bot.send_document(message.chat.id, file)
+
 
 if __name__ == "__main__":
     bot.polling(non_stop=True)

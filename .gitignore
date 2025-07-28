@@ -180,3 +180,5 @@ bot-settings.json
 settings.json
 user_db.txt
 USERS
+.conf
+conf

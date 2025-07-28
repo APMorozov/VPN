@@ -23,9 +23,11 @@ class DataBase:
             self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY UNIQUE,
-            activ BLOB
+            activ BLOB,
+            address TEXT
             )
             ''')
+            self.database.commit()
             self.database.close()
         except Exception as exc:
             print(f"ERROR! Can not make users table in data base {exc}")
@@ -33,7 +35,7 @@ class DataBase:
     def insert_new_user(self, user_id: int, db_name: str):
         self.__connect_database(db_name)
         try:
-            self.cursor.execute('INSERT INTO users (id, activ) VALUES (?, ?)', (user_id, 0))
+            self.cursor.execute('INSERT INTO users (id, activ, address) VALUES (?, ?, ?)', (user_id, 0, "10.0.0.1/32"))
             self.database.commit()
         except Exception as exc:
             print(f"User already exists: {exc}")
