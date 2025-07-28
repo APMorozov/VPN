@@ -2,7 +2,7 @@ import sqlite3
 
 
 class DataBase:
-    def connect_database(self, db_name: str):
+    def __connect_database(self, db_name: str):
         try:
             self.database = sqlite3.connect(db_name)
             self.cursor = self.database.cursor()
@@ -19,7 +19,7 @@ class DataBase:
 
     def make_users_table(self, db_name: str):
         try:
-            self.connect_database(db_name)
+            self.__connect_database(db_name)
             self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY UNIQUE,
@@ -31,7 +31,7 @@ class DataBase:
             print(f"ERROR! Can not make users table in data base {exc}")
 
     def insert_new_user(self, user_id: int, db_name: str):
-        self.connect_database(db_name)
+        self.__connect_database(db_name)
         try:
             self.cursor.execute('INSERT INTO users (id, activ) VALUES (?, ?)', (user_id, 0))
             self.database.commit()
@@ -41,7 +41,7 @@ class DataBase:
 
     def get_not_activ_user(self, db_name):
         try:
-            self.connect_database(db_name)
+            self.__connect_database(db_name)
             self.cursor.execute('SELECT id, activ FROM users WHERE activ = 0')
             not_active_users = self.cursor.fetchall()
             self.database.close()

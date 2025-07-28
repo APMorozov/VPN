@@ -1,16 +1,20 @@
+from database.db_work import DataBase
 from file_work import read_json, write_json
-from functions import add_user
 import telebot
 
-SETTINGS_JSON = read_json("bot-settings.json")
+SETTINGS_JSON = read_json("settings.json")
 TOKEN = SETTINGS_JSON["TOKEN"]
 bot = telebot.TeleBot(TOKEN)
+
+db = DataBase(SETTINGS_JSON["user_db"])
+db.make_users_table(SETTINGS_JSON["user_db"])
 
 @bot.message_handler(commands=["start"])
 def main(message):
     bot.send_message(message.chat.id, "Привет")
     print(message.from_user.id)
-    add_user(message.from_user.id, SETTINGS_JSON["user_db"])
+    db.insert_new_user(message.from_user.id, SETTINGS_JSON["user_db"])
+
 
 
 if __name__ == "__main__":
