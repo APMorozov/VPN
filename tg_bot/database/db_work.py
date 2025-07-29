@@ -35,7 +35,7 @@ class DataBase:
     def insert_new_user(self, user_id: int, db_name: str):
         self.__connect_database(db_name)
         try:
-            self.cursor.execute('INSERT INTO users (id, activ, address) VALUES (?, ?, ?)', (user_id, 0, "10.0.0.1/32"))
+            self.cursor.execute('INSERT INTO users (id, activ, address) VALUES (?, ?, ?)', (user_id, 0, ""))
             self.database.commit()
         except Exception as exc:
             print(f"User already exists: {exc}")
@@ -67,3 +67,12 @@ class DataBase:
             print(f"ERROR! Can not take used ip {exc}")
         finally:
             return  used_ip_list
+
+    def add_used_ip(self, db_name: str, user_ip: str, user_id: int):
+        self.__connect_database(db_name)
+        try:
+            self.cursor.execute(f"UPDATE users SET address = '{user_ip}' WHERE id = {str(user_id)}")
+            self.database.commit()
+        except Exception as exc:
+            print(f"ERROR!Can not add ip address to user {user_id}: {exc}")
+
