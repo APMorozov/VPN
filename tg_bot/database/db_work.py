@@ -80,8 +80,10 @@ class DataBase:
     def is_activ(self, db_name: str, user_id: int):
         self.__connect_database(db_name)
         try:
-            flag = self.cursor.execute(f"SELECT activ WHERE id = {user_id}")
-            if flag == 1:
+            self.cursor.execute(f"SELECT activ FROM users WHERE id = {user_id}")
+            flag = self.cursor.fetchall()
+            print(f"Flag: {flag}")
+            if flag[0] == 1:
                 return True
             return False
         except Exception as exc:
