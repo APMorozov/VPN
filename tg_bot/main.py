@@ -24,7 +24,7 @@ def main(message):
 @bot.message_handler(commands=["get_conf"])
 def get_conf(message):
     bot.send_message(message.chat.id, "Держи конфиг")
-    with open(f"{str(message.from_user.id)}wg.conf", "rb") as file:
+    with open(f"client_conf/{str(message.from_user.id)}wg.conf", "rb") as file:
         bot.send_document(message.chat.id, file)
 
 @bot.message_handler(commands=["make_conf"])
