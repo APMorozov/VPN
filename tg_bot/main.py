@@ -23,25 +23,37 @@ def main(message):
 
 @bot.message_handler(commands=["get_conf"])
 def get_conf(message):
-    bot.send_message(message.chat.id, "Держи конфиг")
-    with open(f"client_conf/{str(message.from_user.id)}wg.conf", "rb") as file:
-        bot.send_document(message.chat.id, file)
+    try:
+        bot.send_message(message.chat.id, "Держи конфиг")
+        with open(f"client_conf/{str(message.from_user.id)}wg.conf", "rb") as file:
+            bot.send_document(message.chat.id, file)
+    except Exception as exc:
+        print(f"ERROR! in func get_conf: {exc}")
+        bot.send_message(message.chat.id, '''Не нашел твой конфиг, сорян
+        Ты его создавал?''')
+
 
 @bot.message_handler(commands=["make_conf"])
 def make_conf(message):
-    user_id = message.from_user.id
-    bot.send_message(message.chat.id, "Подключаю к системе")
-    bot.send_message(message.chat.id, "Создаю ключи")
-    make_keys(user_id)
-    bot.send_message(message.chat.id, "Добавляю информацию на сервер")
-    new_user_ip = ip_generator.get_new_ip(db, SETTINGS_JSON["user_db"])
-    add_new_peer_to_server_conf(user_id, new_user_ip)
-    bot.send_message(message.chat.id, "Создаю ваш конфиг")
-    make_new_user_conf(user_id, new_user_ip)
-    db.add_used_ip(SETTINGS_JSON["user_db"], new_user_ip, user_id)
-    with open(f"client_conf/{user_id}wg.conf", "rb") as file:
-        bot.send_document(message.chat.id, file)
-    make_restart_vpn()
+    try:
+        user_id = message.from_user.id
+        if not db.is_activ(SETTINGS_JSON["user_db"], user_id):
+            bot.send_message(message.chat.id, "Подключаю к системе")
+            bot.send_message(message.chat.id, "Создаю ключи")
+            make_keys(user_id)
+            bot.send_message(message.chat.id, "Добавляю информацию на сервер")
+            new_user_ip = ip_generator.get_new_ip(db, SETTINGS_JSON["user_db"])
+            add_new_peer_to_server_conf(user_id, new_user_ip)
+            bot.send_message(message.chat.id, "Создаю ваш конфиг")
+            make_new_user_conf(user_id, new_user_ip)
+            db.add_used_ip(SETTINGS_JSON["user_db"], new_user_ip, user_id)
+            with open(f"client_conf/{user_id}wg.conf", "rb") as file:
+                    bot.send_document(message.chat.id, file)
+                make_restart_vpn()
+        else:
+            get_conf(message)
+    except Exception as exc:
+        print(f"ERROR!Can not make config for user({user_id}): {exc}")
 
 
 if __name__ == "__main__":

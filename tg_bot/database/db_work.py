@@ -72,7 +72,18 @@ class DataBase:
         self.__connect_database(db_name)
         try:
             self.cursor.execute(f"UPDATE users SET address = '{user_ip}' WHERE id = {str(user_id)}")
+            self.cursor.execute(f"UPDATE users SET activ = 1 WHERE id = {str(user_id)}")
             self.database.commit()
         except Exception as exc:
             print(f"ERROR!Can not add ip address to user {user_id}: {exc}")
+
+    def is_activ(self, db_name: str, user_id: int):
+        self.__connect_database(db_name)
+        try:
+            flag = self.cursor.execute(f"SELECT activ WHERE id = {user_id}")
+            if flag == 1:
+                return True
+            return False
+        except Exception as exc:
+            print(f"ERROR!Can not take info about user id({user_id}: {exc})")
 
