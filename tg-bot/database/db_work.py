@@ -53,4 +53,14 @@ class DataBase:
         finally:
             return not_active_users
 
-
+    def get_used_ip(self, db_name: str):
+        try:
+            self.__connect_database(db_name)
+            self.cursor.execute('SELECT address FROM users')
+            used_ip = self.cursor.fetchall()
+            self.database.close()
+            return used_ip
+        except Exception as exc:
+            print(f"ERROR! Can not take used ip {exc}")
+        finally:
+            return used_ip
