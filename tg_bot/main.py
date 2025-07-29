@@ -24,7 +24,7 @@ def main(message):
 @bot.message_handler(commands=["get_conf"])
 def get_conf(message):
     bot.send_message(message.chat.id, "Держи конфиг")
-    with open("wg_zero.conf", "rb") as file:
+    with open(f"{str(message.from_user.id)}wg.conf", "rb") as file:
         bot.send_document(message.chat.id, file)
 
 @bot.message_handler(commands=["make_conf"])
@@ -39,7 +39,7 @@ def make_conf(message):
     bot.send_message(message.chat.id, "Создаю ваш конфиг")
     make_new_user_conf(user_id, new_user_ip)
     db.add_used_ip(SETTINGS_JSON["user_db"], new_user_ip, user_id)
-    with open(f"{user_id}wg.conf", "rb") as file:
+    with open(f"client_conf/{user_id}wg.conf", "rb") as file:
         bot.send_document(message.chat.id, file)
     make_restart_vpn()
 

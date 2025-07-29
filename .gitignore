@@ -183,3 +183,4 @@ USERS
 .conf
 conf
 wg_zero.conf
+client_conf
