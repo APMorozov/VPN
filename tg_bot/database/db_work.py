@@ -59,8 +59,11 @@ class DataBase:
             self.cursor.execute('SELECT address FROM users')
             used_ip = self.cursor.fetchall()
             self.database.close()
-            return used_ip
+            used_ip_list = []
+            for ip in used_ip:
+                used_ip_list.append(ip[0])
+            return used_ip_list
         except Exception as exc:
             print(f"ERROR! Can not take used ip {exc}")
         finally:
-            return used_ip
+            return  used_ip_list

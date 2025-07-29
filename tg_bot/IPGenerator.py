@@ -12,7 +12,7 @@ class IPGenerator:
         print(used_ip)
         for host in self.subnet.hosts():
             ip_str = f"{host}/32"
-            if ip_str not in used_ip[0]:
+            if ip_str not in used_ip:
                 return ip_str
         raise ValueError("No more free IPs in the subnet!")
 
