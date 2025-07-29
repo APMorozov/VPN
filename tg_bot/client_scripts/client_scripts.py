@@ -13,7 +13,8 @@ def add_new_peer_to_server_conf(user_id: int, user_ip: str):
     public_key = ""
     with open(f"/etc/wireguard/{str(user_id)}_publickey", "r") as file:
         public_key = file.read()
-    peer_str = f'''[Peer]
+    peer_str = f'''
+[Peer]
 PublicKey = {public_key.strip()}
 AllowedIPs = {user_ip}'''
     with open("/etc/wireguard/wg0.conf", "a") as file:
@@ -39,3 +40,5 @@ PersistentKeepalive = 20'''
         file.write(user_config_str)
 
 
+def make_restart_vpn():
+    os.system("systemctl restart wg-quick@wg0.service")

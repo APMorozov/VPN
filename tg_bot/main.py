@@ -2,7 +2,7 @@ from database.db_work import DataBase
 from file_work import read_json
 import telebot
 from IPGenerator import IPGenerator
-from client_scripts.client_scripts import make_keys, make_new_user_conf, add_new_peer_to_server_conf
+from client_scripts.client_scripts import make_keys, make_new_user_conf, add_new_peer_to_server_conf,make_restart_vpn
 
 SETTINGS_JSON = read_json("settings.json")
 TOKEN = SETTINGS_JSON["TOKEN"]
@@ -39,6 +39,7 @@ def make_conf(message):
     make_new_user_conf(user_id, new_user_ip)
     with open(f"{user_id}wg.conf", "rb") as file:
         bot.send_document(message.chat.id, file)
+    make_restart_vpn()
 
 
 if __name__ == "__main__":
