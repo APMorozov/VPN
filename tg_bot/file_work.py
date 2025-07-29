@@ -18,20 +18,6 @@ def read_json(path: str):
         raise Exception(f"An error occurred when opening the file {exc}")
 
 
-def write_json(path: str, data: dict[str, int]) -> None:
-    """
-    write data to json file
-    :param path: path to json file
-    :param data: data to file
-    :return: None
-    """
-    try:
-        with open(path, mode="w", encoding="utf-8") as file:
-            return json.dump(data, file)
-    except FileNotFoundError as not_found:
-        raise FileNotFoundError(f"File was not found: {not_found}")
-    except Exception as exc:
-        raise Exception(f"An error occurred when opening the file {exc}")
 
 
 def read_text(path: str) -> str:

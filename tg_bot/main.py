@@ -1,5 +1,5 @@
 from database.db_work import DataBase
-from file_work import read_json, write_json
+from file_work import read_json
 import telebot
 from IPGenerator import IPGenerator
 from client_scripts.client_scripts import make_keys, make_new_user_conf, add_new_peer_to_server_conf
@@ -37,6 +37,8 @@ def make_conf(message):
     add_new_peer_to_server_conf(user_id, new_user_ip)
     bot.send_message(message.chat.id, "Создаю ваш конфиг")
     make_new_user_conf(user_id, new_user_ip)
+    with open(f"{user_id}wg.conf", "rb") as file:
+        bot.send_document(message.chat.id, file)
 
 
 if __name__ == "__main__":

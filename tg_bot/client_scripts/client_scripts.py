@@ -11,18 +11,18 @@ def make_keys(user_id: int):
 
 def add_new_peer_to_server_conf(user_id: int, user_ip: str):
     public_key = ""
-    with open(f"{str(user_id)}_publickey", "r") as file:
+    with open(f"/etc/wireguard/{str(user_id)}_publickey", "r") as file:
         public_key = file.read()
     peer_str = f'''[Peer]
 PublicKey = {public_key.strip()}
 AllowedIPs = {user_ip}'''
-    with open("wg0.conf", "a") as file:
+    with open("/etc/wireguard/wg0.conf", "a") as file:
         file.write(peer_str)
 
 
 def make_new_user_conf(user_id: int, user_address: str):
     private_key = ""
-    with open(f"{user_id}_privatekey", "r") as file:
+    with open(f"/etc/wireguard/{user_id}_privatekey", "r") as file:
         private_key = file.read()
 
     user_config_str = f'''[Interface]
