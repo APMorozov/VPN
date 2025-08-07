@@ -49,7 +49,7 @@ def make_conf(message):
             db.add_used_ip(SETTINGS_JSON["user_db"], new_user_ip, user_id)
             with open(f"client_conf/{user_id}wg.conf", "rb") as file:
                     bot.send_document(message.chat.id, file)
-                make_restart_vpn()
+            make_restart_vpn()
         else:
             get_conf(message)
     except Exception as exc:
