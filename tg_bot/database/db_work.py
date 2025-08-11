@@ -66,7 +66,7 @@ class DataBase:
         except Exception as exc:
             print(f"ERROR! Can not take used ip {exc}")
         finally:
-            return  used_ip_list
+            return used_ip_list
 
     def add_used_ip(self, db_name: str, user_ip: str, user_id: int):
         self.__connect_database(db_name)
@@ -74,6 +74,7 @@ class DataBase:
             self.cursor.execute(f"UPDATE users SET address = '{user_ip}' WHERE id = {str(user_id)}")
             self.cursor.execute(f"UPDATE users SET activ = 1 WHERE id = {str(user_id)}")
             self.database.commit()
+            self.database.close()
         except Exception as exc:
             print(f"ERROR!Can not add ip address to user {user_id}: {exc}")
 
@@ -82,10 +83,33 @@ class DataBase:
         try:
             self.cursor.execute(f"SELECT activ FROM users WHERE id = {user_id}")
             flag = self.cursor.fetchall()
+            self.database.close()
             flag2 = flag[0]
             if flag2[0] == 1:
                 return True
             return False
         except Exception as exc:
             print(f"ERROR!Can not take info about user id({user_id}: {exc})")
+
+
+    def get_ip_by_id(self, db_name: str, user_id: int):
+        self.__connect_database(db_name)
+        try:
+            self.cursor.execute(f"SELECT address FROM users WHERE id = {user_id}")
+            ip = self.cursor.fetchall()
+            self.database.close()
+            clean_ip = ip[0]
+            return clean_ip[0]
+        except Exception as exc:
+            print(f"ERROR! Can not take ip from user id({user_id}: {exc})")
+
+    def free_ip(self, db_name: str, user_id: int):
+        self.__connect_database(db_name)
+        try:
+            self.cursor.execute(f'UPDATE users SET address = "", activ = 0 WHERE id = {user_id}')
+            self.database.commit()
+            self.database.close()
+        except Exception as exc:
+            print(f"ERROR! Can not delit ip address from user id({user_id}: {exc})")
+
 

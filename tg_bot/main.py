@@ -4,7 +4,7 @@ from database.db_work import DataBase
 from file_work import read_json
 import telebot
 from IPGenerator import IPGenerator
-from client_scripts.client_scripts import make_keys, make_new_user_conf, add_new_peer_to_server_conf,make_restart_vpn
+from client_scripts.client_scripts import make_keys, make_new_user_conf, add_new_peer_to_server_conf,make_restart_vpn,delete_user
 
 print(os.listdir())
 SETTINGS_JSON = read_json("settings.json")
@@ -13,7 +13,6 @@ bot = telebot.TeleBot(TOKEN)
 
 db = DataBase(SETTINGS_JSON["user_db"])
 db.make_users_table(SETTINGS_JSON["user_db"])
-
 
 ip_generator = IPGenerator()
 

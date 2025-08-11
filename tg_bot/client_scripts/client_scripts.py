@@ -1,3 +1,5 @@
+from VPN.tg_bot.file_work import read_text,write_text
+from VPN.tg_bot.database.db_work import DataBase
 import os
 
 
@@ -42,3 +44,20 @@ PersistentKeepalive = 20'''
 
 def make_restart_vpn():
     os.system("systemctl restart wg-quick@wg0.service")
+
+
+def delete_user(user_ip: str, user_id: int):
+    """
+    USE ONLY WITH free_ip FROM db_work
+    :param user_ip:
+    :param user_id:
+    :return:
+    """
+    data = read_text("/etc/wireguard/wg0.conf")
+    public_key = read_text(f"/etc/wireguard/user_passwords/{str(user_id)}_publickey")
+    new_data = data.replace(f'''[Peer]
+PublicKey = {public_key.strip()}
+AllowedIPs = {user_ip}''','')
+    write_text("/etc/wireguard/wg0.conf", new_data)
+    os.remove(f"/etc/wireguard/user_passwords/{str(user_id)}_publickey")
+
