@@ -7,7 +7,7 @@ from IPGenerator import IPGenerator
 from client_scripts.client_scripts import make_keys, make_new_user_conf, add_new_peer_to_server_conf,make_restart_vpn
 
 print(os.listdir())
-SETTINGS_JSON = read_json("wireguard/VPN/tg_bot/settings.json")
+SETTINGS_JSON = read_json("settings.json")
 TOKEN = SETTINGS_JSON["TOKEN"]
 bot = telebot.TeleBot(TOKEN)
 
@@ -22,7 +22,7 @@ def main(message):
     bot.send_message(message.chat.id, '''Привет, я выдаю конфиги для VPN, скачай WireGuard и вставь туда мой конфиг
 
 Для создания конфига пиши:
-/make_config''')
+/make_conf''')
     print(message.from_user.id)
     db.insert_new_user(message.from_user.id, SETTINGS_JSON["user_db"])
 
@@ -66,11 +66,8 @@ def make_conf(message):
             make_new_user_conf(user_id, new_user_ip)
             db.add_used_ip(SETTINGS_JSON["user_db"], new_user_ip, user_id)
             with open(f"client_conf/{user_id}wg.conf", "rb") as file:
-<<<<<<< HEAD
                 bot.send_document(message.chat.id, file)
-=======
-                    bot.send_document(message.chat.id, file)
->>>>>>> 1ae539d230e77f024c85f22fe9069f2101898882
+                bot.send_document(message.chat.id, file)
             make_restart_vpn()
         else:
             get_conf(message)

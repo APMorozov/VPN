@@ -83,9 +83,6 @@ class DataBase:
             self.cursor.execute(f"SELECT activ FROM users WHERE id = {user_id}")
             flag = self.cursor.fetchall()
             flag2 = flag[0]
-            print(f"Flag: {flag}")
-            print(f"Flag2: {flag2}")
-            print(f"Flag3: {flag2[0]}")
             if flag2[0] == 1:
                 return True
             return False
