@@ -63,7 +63,11 @@ def make_conf(message):
             make_new_user_conf(user_id, new_user_ip)
             db.add_used_ip(SETTINGS_JSON["user_db"], new_user_ip, user_id)
             with open(f"client_conf/{user_id}wg.conf", "rb") as file:
+<<<<<<< HEAD
                 bot.send_document(message.chat.id, file)
+=======
+                    bot.send_document(message.chat.id, file)
+>>>>>>> 1ae539d230e77f024c85f22fe9069f2101898882
             make_restart_vpn()
         else:
             get_conf(message)
