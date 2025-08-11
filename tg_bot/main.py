@@ -16,9 +16,24 @@ ip_generator = IPGenerator()
 
 @bot.message_handler(commands=["start"])
 def main(message):
-    bot.send_message(message.chat.id, "Привет")
+    bot.send_message(message.chat.id, '''Привет, я выдаю конфиги для VPN, скачай WireGuard и вставь туда мой конфиг
+
+Для создания конфига пиши:
+/make_config''')
     print(message.from_user.id)
     db.insert_new_user(message.from_user.id, SETTINGS_JSON["user_db"])
+
+@bot.message_handler(commands=["help"])
+def help_func(message):
+    bot.send_message(message.chat.id, '''<b>Информация</b>
+Для использования VPN, вам нужно скачать приложение WireGuard
+Есть в App Store и Google Play
+После вставить конфиг из бота в приложение
+
+
+<b>Обзор команд</b>
+/get_conf - Выдает ваш конфиг, если он уже создавался вами
+/make_conf - Создает ваш конфиг''', parse_mode="html")
 
 
 @bot.message_handler(commands=["get_conf"])
@@ -48,8 +63,8 @@ def make_conf(message):
             make_new_user_conf(user_id, new_user_ip)
             db.add_used_ip(SETTINGS_JSON["user_db"], new_user_ip, user_id)
             with open(f"client_conf/{user_id}wg.conf", "rb") as file:
-                    bot.send_document(message.chat.id, file)
-                make_restart_vpn()
+                bot.send_document(message.chat.id, file)
+            make_restart_vpn()
         else:
             get_conf(message)
     except Exception as exc:
