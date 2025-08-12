@@ -1,5 +1,5 @@
-from VPN.tg_bot.file_work import read_text,write_text
-from VPN.tg_bot.database.db_work import DataBase
+from file_work import read_text,write_text
+from database.db_work import DataBase
 import os
 
 

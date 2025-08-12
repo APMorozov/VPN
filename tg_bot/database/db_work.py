@@ -28,6 +28,8 @@ class DataBase:
             )
             ''')
             self.database.commit()
+            self.cursor.execute('INSERT INTO users (id, activ, address) VALUES (?, ?, ?)', (0, 1, "10.0.0.1/24"))
+            self.database.commit()
             self.database.close()
         except Exception as exc:
             print(f"ERROR! Can not make users table in data base {exc}")
