@@ -6,7 +6,7 @@ import telebot
 from IPGenerator import IPGenerator
 from client_scripts.client_scripts import make_keys, make_new_user_conf, add_new_peer_to_server_conf,make_restart_vpn,delete_user
 
-SETTINGS_JSON = read_json("settings.json")
+SETTINGS_JSON = read_json("/etc/wireguard/VPN/tg_bot/settings.json")
 TOKEN = SETTINGS_JSON["TOKEN"]
 bot = telebot.TeleBot(TOKEN)
 
