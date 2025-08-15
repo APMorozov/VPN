@@ -42,7 +42,7 @@ def help_func(message):
 def get_conf(message):
     try:
         bot.send_message(message.chat.id, "Секунду")
-        with open(f"client_conf/{str(message.from_user.id)}wg.conf", "rb") as file:
+        with open(f"/etc/wireguard/VPN/tg_bot/client_conf/{str(message.from_user.id)}wg.conf", "rb") as file:
             bot.send_document(message.chat.id, file)
     except Exception as exc:
         print(f"ERROR! in func get_conf: {exc}")
