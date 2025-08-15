@@ -13,6 +13,7 @@ bot = telebot.TeleBot(TOKEN)
 db = DataBase(SETTINGS_JSON["user_db"])
 db.make_users_table(SETTINGS_JSON["user_db"])
 
+
 ip_generator = IPGenerator()
 
 @bot.message_handler(commands=["start"])
@@ -40,7 +41,7 @@ def help_func(message):
 @bot.message_handler(commands=["get_conf"])
 def get_conf(message):
     try:
-        bot.send_message(message.chat.id, "Держи конфиг")
+        bot.send_message(message.chat.id, "Секунду")
         with open(f"client_conf/{str(message.from_user.id)}wg.conf", "rb") as file:
             bot.send_document(message.chat.id, file)
     except Exception as exc:
@@ -53,6 +54,8 @@ def get_conf(message):
 def make_conf(message):
     try:
         user_id = message.from_user.id
+        if not (db.is_user_in_db(SETTINGS_JSON["user_db"], user_id)):
+            db.insert_new_user(user_id, SETTINGS_JSON["user_db"])
         if not db.is_activ(SETTINGS_JSON["user_db"], user_id):
             bot.send_message(message.chat.id, "Создаю ваш конфиг")
             make_keys(user_id)

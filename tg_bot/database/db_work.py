@@ -165,4 +165,16 @@ class DataBase:
         except Exception as exc:
             print(f"ERROR! Can not delit ip address from user id({user_id}: {exc})")
 
+    def is_user_in_db(self, db_name: str, user_id: int) -> bool:
+        self.__connect_database(db_name)
+        try:
+            self.cursor.execute(f'SELECT EXISTS(SELECT 1 FROM users WHERE id = {user_id})')
+            flag = self.cursor.fetchall()[0]
+            return flag[0]
+        except Exception as exc:
+            print(f"ERROR! Can not check user({user_id}): {exc}")
+
+
+
+
 
