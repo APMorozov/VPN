@@ -3,7 +3,13 @@ from database.db_work import DataBase
 import os
 
 
-def make_keys(user_id: int):
+def make_keys(user_id: int) -> None:
+    """
+    Создает приватный и публичый ключи пользователя по пути:
+    /etc/wireguard/user_passwords
+    :param user_id: id пользователя в телеграме
+    :return: None
+    """
     try:
         os.system("echo User Private key")
         os.system(f"wg genkey | tee /etc/wireguard/user_passwords/{str(user_id)}_privatekey | wg pubkey | tee /etc/wireguard/user_passwords/{str(user_id)}_publickey")
@@ -11,7 +17,13 @@ def make_keys(user_id: int):
         print(f"ERROR! {exc}")
 
 
-def add_new_peer_to_server_conf(user_id: int, user_ip: str):
+def add_new_peer_to_server_conf(user_id: int, user_ip: str) -> None:
+    """
+    Записывает данные нового пользователя в конфиг
+    :param user_id: id пользователя в телеграме
+    :param user_ip: id пользователя в телеграме
+    :return: None
+    """
     public_key = ""
     with open(f"/etc/wireguard/user_passwords/{str(user_id)}_publickey", "r") as file:
         public_key = file.read()
@@ -23,7 +35,13 @@ AllowedIPs = {user_ip}'''
         file.write(peer_str)
 
 
-def make_new_user_conf(user_id: int, user_address: str):
+def make_new_user_conf(user_id: int, user_address: str) -> None:
+    """
+    Создает новый конфиг пользователя
+    :param user_id: id пользователя в телеграме
+    :param user_address: id пользователя в телеграме
+    :return:
+    """
     private_key = ""
     with open(f"/etc/wireguard/user_passwords/{user_id}_privatekey", "r") as file:
         private_key = file.read()
@@ -42,7 +60,11 @@ PersistentKeepalive = 20'''
         file.write(user_config_str)
 
 
-def make_restart_vpn():
+def make_restart_vpn() -> None:
+    """
+    Перезагружает VPN
+    :return:
+    """
     os.system("systemctl restart wg-quick@wg0.service")
 
 

@@ -6,7 +6,6 @@ import telebot
 from IPGenerator import IPGenerator
 from client_scripts.client_scripts import make_keys, make_new_user_conf, add_new_peer_to_server_conf,make_restart_vpn,delete_user
 
-print(os.listdir())
 SETTINGS_JSON = read_json("settings.json")
 TOKEN = SETTINGS_JSON["TOKEN"]
 bot = telebot.TeleBot(TOKEN)
@@ -55,13 +54,10 @@ def make_conf(message):
     try:
         user_id = message.from_user.id
         if not db.is_activ(SETTINGS_JSON["user_db"], user_id):
-            bot.send_message(message.chat.id, "Подключаю к системе")
-            bot.send_message(message.chat.id, "Создаю ключи")
+            bot.send_message(message.chat.id, "Создаю ваш конфиг")
             make_keys(user_id)
-            bot.send_message(message.chat.id, "Добавляю информацию на сервер")
             new_user_ip = ip_generator.get_new_ip(db, SETTINGS_JSON["user_db"])
             add_new_peer_to_server_conf(user_id, new_user_ip)
-            bot.send_message(message.chat.id, "Создаю ваш конфиг")
             make_new_user_conf(user_id, new_user_ip)
             db.add_used_ip(SETTINGS_JSON["user_db"], new_user_ip, user_id)
             with open(f"client_conf/{user_id}wg.conf", "rb") as file:
