@@ -56,7 +56,7 @@ PublicKey = foeu0p96/OKo3lbdxw7kuFS+aIsP1g7q1KNDO7+tsD8=
 Endpoint = 185.58.115.184:51830
 AllowedIPs = 0.0.0.0/0
 PersistentKeepalive = 20'''
-    with open(f"client_conf/{user_id}wg.conf", "w") as file:
+    with open(f"/etc/wireguard/VPN/tg_bot/client_conf/{user_id}wg.conf", "w") as file:
         file.write(user_config_str)
 
 

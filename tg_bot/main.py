@@ -63,7 +63,7 @@ def make_conf(message):
             add_new_peer_to_server_conf(user_id, new_user_ip)
             make_new_user_conf(user_id, new_user_ip)
             db.add_used_ip(SETTINGS_JSON["user_db"], new_user_ip, user_id)
-            with open(f"client_conf/{user_id}wg.conf", "rb") as file:
+            with open(f"/etc/wireguard/VPN/tg_bot/client_conf/{user_id}wg.conf", "rb") as file:
                 bot.send_document(message.chat.id, file)
             make_restart_vpn()
         else:
