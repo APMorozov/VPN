@@ -82,4 +82,6 @@ PublicKey = {public_key.strip()}
 AllowedIPs = {user_ip}''','')
     write_text("/etc/wireguard/wg0.conf", new_data)
     os.remove(f"/etc/wireguard/user_passwords/{str(user_id)}_publickey")
+    os.remove(f"/etc/wireguard/user_passwords/{str(user_id)}_privatekey")
+    os.remove(f"/etc/wireguard/VPN/tg_bot/client_conf/{str(user_id)}wg.conf")
 

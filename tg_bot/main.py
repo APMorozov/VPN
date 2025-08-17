@@ -72,5 +72,16 @@ def make_conf(message):
         print(f"ERROR!Can not make config for user({user_id}): {exc}")
 
 
+@bot.message_handler(commands=["delete"])
+def delete(message):
+    try:
+        user_id = message.from_user.id
+        user_ip = db.get_ip_by_id(SETTINGS_JSON["user_db"], user_id)
+        delete_user(user_ip, user_id)
+        db.free_ip(SETTINGS_JSON["user_db"], user_id)
+    except Exception as exc:
+        print(f"ERROR! Can not delete user({user_id}): {exc}")
+
+
 if __name__ == "__main__":
     bot.polling(non_stop=True)
